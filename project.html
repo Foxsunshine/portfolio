@@ -1,0 +1,663 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Project — Cheng Jiang</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Noto+Sans+JP:wght@400;500;600;700&family=Noto+Sans+SC:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg:        #ffffff;
+    --bg-alt:    #fafafa;
+    --bg-soft:   #f5f5f5;
+    --ink:       #111111;
+    --ink-body:  #333333;
+    --ink-muted: #888888;
+    --ink-meta:  #555555;
+    --border:    #e5e7eb;
+    --border-soft: #f0f0f0;
+    --font-sans: 'Inter', 'Noto Sans JP', 'Noto Sans SC', system-ui, -apple-system, sans-serif;
+    --font-cjk:  'Noto Sans JP', 'Noto Sans SC', 'Inter', system-ui, sans-serif;
+    --font-mono: 'JetBrains Mono', 'SF Mono', Menlo, Consolas, monospace;
+  }
+  :root[lang="ja"] { --font-sans: 'Noto Sans JP', 'Noto Sans SC', 'Inter', system-ui, sans-serif; }
+  :root[lang="zh"] { --font-sans: 'Noto Sans SC', 'Noto Sans JP', 'Inter', system-ui, sans-serif; }
+
+  *, *::before, *::after { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    background: var(--bg);
+    color: var(--ink-body);
+    font-family: var(--font-sans);
+    font-size: 16px;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  img { display: block; max-width: 100%; height: auto; }
+
+  /* ──────── Top bar ──────── */
+  .topbar {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    background: rgba(255,255,255,0.92);
+    backdrop-filter: saturate(180%) blur(12px);
+    -webkit-backdrop-filter: saturate(180%) blur(12px);
+    border-bottom: 1px solid var(--border-soft);
+  }
+  .topbar-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 48px;
+    height: 64px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+  }
+  .back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    color: var(--ink-body);
+    text-decoration: none;
+    font-size: 13px;
+    font-family: var(--font-mono);
+    font-weight: 500;
+    letter-spacing: 0.04em;
+    transition: color 0.2s ease, gap 0.2s ease;
+  }
+  .back-link:hover { color: var(--ink); gap: 14px; }
+  .back-link svg { transition: transform 0.2s ease; }
+  .back-link:hover svg { transform: translateX(-2px); }
+
+  .crumb {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--ink-muted);
+  }
+  .crumb strong { color: var(--ink); font-weight: 500; }
+
+  .lang-toggle {
+    display: flex;
+    align-items: center;
+    gap: 2px;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 500;
+  }
+  .lang-toggle button {
+    background: none;
+    border: 0;
+    padding: 6px 8px;
+    color: var(--ink-muted);
+    cursor: pointer;
+    letter-spacing: 0.08em;
+    transition: color 0.15s ease;
+  }
+  .lang-toggle button:hover { color: var(--ink-body); }
+  .lang-toggle button.active { color: var(--ink); }
+  .lang-toggle .sep { color: var(--border); padding: 0 2px; }
+
+  /* ──────── Header / hero meta ──────── */
+  .hero {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 96px 48px 72px;
+    border-bottom: 1px solid var(--border-soft);
+  }
+  .hero-eyebrow {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--ink-muted);
+    margin: 0 0 24px;
+  }
+  .hero-title {
+    font-size: clamp(40px, 6vw, 64px);
+    font-weight: 700;
+    line-height: 1.05;
+    letter-spacing: -0.025em;
+    color: var(--ink);
+    margin: 0 0 32px;
+    max-width: 14ch;
+  }
+  .hero-desc {
+    font-size: 18px;
+    line-height: 1.65;
+    color: var(--ink-body);
+    margin: 0 0 56px;
+    max-width: 64ch;
+  }
+  .hero-meta {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 32px 48px;
+    padding-top: 24px;
+    border-top: 1px solid var(--border-soft);
+  }
+  .meta-item {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  .meta-label {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--ink-muted);
+  }
+  .meta-value {
+    font-size: 15px;
+    color: var(--ink);
+    font-weight: 500;
+  }
+
+  /* ──────── Image stack ──────── */
+  .stack {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 88px 48px 120px;
+    display: flex;
+    flex-direction: column;
+    gap: 56px;
+  }
+
+  .img-block {
+    position: relative;
+  }
+  .img-block img {
+    width: 100%;
+    border-radius: 4px;
+  }
+  .img-caption {
+    margin-top: 12px;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--ink-muted);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .img-caption .num {
+    color: var(--ink);
+    font-weight: 500;
+  }
+  .img-caption .line {
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+
+  /* Layout variants */
+  .img-full   { width: 100%; }
+  .img-wide   { width: 92%; margin: 0 auto; }
+  .img-medium { width: 78%; margin: 0 auto; }
+  .img-narrow { width: 62%; margin: 0 auto; }
+
+  /* Pair: two portraits side by side */
+  .img-pair {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+    align-items: start;
+  }
+  .img-pair .img-block { width: 100%; }
+  .img-pair .img-block img { width: 100%; }
+
+  /* ──────── Footer / next-prev ──────── */
+  .nextnav {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 64px 48px 96px;
+    border-top: 1px solid var(--border-soft);
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+  }
+  .nextnav a {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding: 24px 0;
+    text-decoration: none;
+    color: var(--ink-body);
+    transition: color 0.2s ease, transform 0.2s ease;
+  }
+  .nextnav a.disabled {
+    pointer-events: none;
+    opacity: 0.35;
+  }
+  .nextnav a:hover { color: var(--ink); }
+  .nextnav .dir {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--ink-muted);
+  }
+  .nextnav .name {
+    font-size: 22px;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    color: var(--ink);
+  }
+  .nextnav .next-col { text-align: right; }
+
+  /* Reveal animation */
+  [data-reveal] {
+    opacity: 0;
+    transform: translateY(16px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+  [data-reveal].in {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  @media (max-width: 900px) {
+    .topbar-inner, .hero, .stack, .nextnav { padding-left: 24px; padding-right: 24px; }
+    .hero { padding-top: 56px; padding-bottom: 48px; }
+    .hero-title { font-size: 36px; }
+    .hero-meta { grid-template-columns: 1fr 1fr; gap: 24px; }
+    .stack { padding-top: 56px; gap: 40px; }
+    .img-wide, .img-medium, .img-narrow { width: 100%; }
+    .img-pair { grid-template-columns: 1fr; gap: 24px; }
+    .nextnav { grid-template-columns: 1fr; }
+    .nextnav .next-col { text-align: left; }
+    .crumb { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="topbar-inner">
+    <a class="back-link" href="Portfolio.html#design" id="back-link">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 18l-6-6 6-6"/></svg>
+      <span data-i18n="back">All work</span>
+    </a>
+    <div class="crumb">
+      <span data-i18n="design">Design</span> &nbsp;/&nbsp; <strong id="crumb-num">01</strong>
+    </div>
+    <div class="lang-toggle">
+      <button data-lang="en">EN</button>
+      <span class="sep">·</span>
+      <button data-lang="ja">JA</button>
+      <span class="sep">·</span>
+      <button data-lang="zh">ZH</button>
+    </div>
+  </div>
+</header>
+
+<section class="hero" data-reveal>
+  <div class="hero-eyebrow" id="hero-eyebrow"></div>
+  <h1 class="hero-title" id="hero-title"></h1>
+  <p class="hero-desc" id="hero-desc"></p>
+  <div class="hero-meta">
+    <div class="meta-item">
+      <span class="meta-label" data-i18n="meta_year">Year</span>
+      <span class="meta-value" id="meta-year"></span>
+    </div>
+    <div class="meta-item">
+      <span class="meta-label" data-i18n="meta_role">Role</span>
+      <span class="meta-value" id="meta-role"></span>
+    </div>
+    <div class="meta-item">
+      <span class="meta-label" data-i18n="meta_client">Client</span>
+      <span class="meta-value" id="meta-client"></span>
+    </div>
+    <div class="meta-item">
+      <span class="meta-label" data-i18n="meta_category">Category</span>
+      <span class="meta-value" id="meta-cat"></span>
+    </div>
+  </div>
+</section>
+
+<main class="stack" id="stack"></main>
+
+<nav class="nextnav">
+  <a class="prev-col" id="prev-link">
+    <span class="dir">← <span data-i18n="prev">Previous</span></span>
+    <span class="name" id="prev-name"></span>
+  </a>
+  <a class="next-col" id="next-link">
+    <span class="dir"><span data-i18n="next">Next</span> →</span>
+    <span class="name" id="next-name"></span>
+  </a>
+</nav>
+
+<script>
+  /* ───────── Project data (mirrors Portfolio.html PROJECTS) ───────── */
+  const PROJECTS = [
+    {
+      id: 1,
+      title: { en: "Zoomily", ja: "Zoomily", zh: "Zoomily" },
+      cat:   { en: "Brand Identity", ja: "ブランドVI", zh: "品牌VI" },
+      year: "2019",
+      role:  { en: "Visual Identity Design", ja: "VIデザイン", zh: "视觉识别设计" },
+      client:{ en: "Self-initiated", ja: "個人プロジェクト", zh: "个人项目" },
+      desc:  {
+        en: "A pet brand VI system inspired by the refined colors of popular Chinese court dramas. Targets female customers and uses a black cat character to enhance brand recognition. Includes packaging applications for the derived sub-brands Camily and Domily.",
+        ja: "ペットブランドのVIシステム。中国宮廷ドラマの洗練された色彩をインスピレーションに、女性顧客をターゲットとした黒猫キャラクターによるブランド認知向上。サブブランドCamily / Domilyのパッケージ展開も含む。",
+        zh: "宠物品牌VI系统。配色灵感来源于热播中国宫廷剧的精致色调，主要面向女性客户，引入黑猫角色增强品牌辨识度，同时包含子品牌Camily/Domily的包装应用设计。"
+      },
+      details: [
+        { src: "assets/detail/project-1/img-1.jpg", w: 1887, h: 1281 }, // 1.47 landscape
+        { src: "assets/detail/project-1/img-2.jpg", w: 1886, h: 2415 }, // 0.78 portrait
+        { src: "assets/detail/project-1/img-3.jpg", w: 1886, h: 1181 }, // 1.60 wide landscape
+        { src: "assets/detail/project-1/img-4.jpg", w: 1886, h: 2021 }, // 0.93 nearly square
+        { src: "assets/detail/project-1/img-5.jpg", w: 1886, h: 3510 }  // 0.54 very tall
+      ]
+    },
+    {
+      id: 2,
+      title: { en: "Joyoung Festival Gift", ja: "九陽 新年ギフト", zh: "九阳新年礼盒" },
+      cat:   { en: "Packaging Design", ja: "パッケージデザイン", zh: "包装设计" },
+      year: "2020",
+      role:  { en: "Chief Designer", ja: "チーフデザイナー", zh: "主设计师" },
+      client:{ en: "Joyoung Co., Ltd.", ja: "九陽株式会社", zh: "九阳股份" },
+      desc:  {
+        en: "Lunar New Year gift packs for Joyoung's employees and major customers. Design inspired by three flagship products (water dispenser, rice cooker, cooking machine), featuring the Joyoung circle, brand orange, and classic festival elements.",
+        ja: "九陽の従業員・主要顧客向け年賀ギフトパック。ウォーターサーバー、炊飯器、クッキングマシンの3主力製品をモチーフに、ブランドカラーのオレンジと中国の正月要素を融合。",
+        zh: "九阳员工及重要客户的新年礼盒。设计灵感来自2020年三大主力产品（饮水机、电饭煲、料理机），视觉突出九阳圆环标志、品牌橙色和经典年味元素。"
+      },
+      details: [
+        { src: "assets/detail/project-2/img-1.jpg", w: 5334, h: 3000 }, // 1.78 landscape
+        { src: "assets/detail/project-2/img-2.jpg", w: 5334, h: 3000 },
+        { src: "assets/detail/project-2/img-3.jpg", w: 5334, h: 3000 },
+        { src: "assets/detail/project-2/img-4.jpg", w: 5334, h: 3001 },
+        { src: "assets/detail/project-2/img-5.jpg", w: 5334, h: 3000 }
+      ]
+    },
+    {
+      id: 3,
+      title: { en: "Tencent Welfare Gift", ja: "Tencent 公益ギフト", zh: "腾讯公益礼盒" },
+      cat:   { en: "Packaging Design", ja: "パッケージデザイン", zh: "包装设计" },
+      year: "2021",
+      role:  { en: "Chief Designer", ja: "チーフデザイナー", zh: "主设计师" },
+      client:{ en: "ThinkBig Studio", ja: "ThinkBig Studio", zh: "ThinkBig Studio" },
+      desc:  {
+        en: "Gift for participants in Tencent's public-welfare fundraising campaign. PVC shell packaging with special welfare paper, containing a 100-day plan with to-do lists and stickers.",
+        ja: "テンセント公益募金キャンペーン参加者向けギフト。PVCシェルと特別公益紙によるパッケージに、100日プラン（ToDoリスト＋ステッカー）を収録。",
+        zh: "腾讯公益募捐活动参与者纪念礼品。PVC外壳搭配特种公益纸包装，内含100天计划（待办清单+特别贴纸）。"
+      },
+      details: [
+        { src: "assets/detail/project-3/img-1.jpg", w: 3106, h: 2071 }, // 1.50
+        { src: "assets/detail/project-3/img-2.jpg", w: 3199, h: 2133 },
+        { src: "assets/detail/project-3/img-3.jpg", w: 3199, h: 2133 },
+        { src: "assets/detail/project-3/img-4.jpg", w: 3199, h: 2133 },
+        { src: "assets/detail/project-3/img-5.jpg", w: 3065, h: 2044 }
+      ]
+    },
+    {
+      id: 4,
+      title: { en: "Carnivo Toy Gift", ja: "Carnivo おもちゃギフト", zh: "Carnivo 玩具礼盒" },
+      cat:   { en: "3D Modeling · Packaging", ja: "3Dモデリング · パッケージ", zh: "3D建模 · 包装" },
+      year: "2021",
+      role:  { en: "3D Modeling, Package Design", ja: "3Dモデリング、パッケージ", zh: "3D建模、包装设计" },
+      client:{ en: "ThinkBig Studio", ja: "ThinkBig Studio", zh: "ThinkBig Studio" },
+      desc:  {
+        en: "Children's-Day gift for Carnival Advertising clients. Co-branded with ThinkBig's 'little white' IP and packaged in a transparent PVC box with a skateboard and a roly-poly toy figure.",
+        ja: "こどもの日向けクライアントギフト。ThinkBigの「little white」IPとのコラボ。透明PVCボックスにスケートボードと起き上がりこぼしフィギュアを収納。",
+        zh: "儿童节客户礼品。与ThinkBig「小白」IP联名，透明PVC盒内装有滑板和「小白」不倒翁玩偶，以游戏元素展现广告人的多元创意。"
+      },
+      details: [
+        { src: "assets/detail/project-4/img-1.jpg", w: 3201, h: 2754 }, // 1.16 nearly square
+        { src: "assets/detail/project-4/img-2.jpg", w: 1920, h: 1920 }, // square
+        { src: "assets/detail/project-4/img-3.jpg", w: 1920, h: 1920 }, // square
+        { src: "assets/detail/project-4/img-4.jpg", w: 1920, h: 1920 }, // square
+        { src: "assets/detail/project-4/img-5.jpg", w: 1920, h: 1343 }  // 1.43 landscape
+      ]
+    },
+    {
+      id: 5,
+      title: { en: "Joyoung Recruit", ja: "九陽 新卒採用", zh: "九阳校招" },
+      cat:   { en: "Poster · Brand Design", ja: "ポスター · ブランド", zh: "海报 · 品牌设计" },
+      year: "2020",
+      role:  { en: "Chief Designer", ja: "チーフデザイナー", zh: "主设计师" },
+      client:{ en: "Joyoung Co., Ltd.", ja: "九陽株式会社", zh: "九阳股份" },
+      desc:  {
+        en: "Campus-recruitment visuals to reposition Joyoung's brand for young people. Bold orange, glass-textured brand elements, and playful typography break the 'traditional soymilk-machine brand' perception.",
+        ja: "キャンパスリクルーティング用ビジュアル。「伝統的な豆乳メーカーブランド」というイメージを刷新するため、大胆なオレンジ、ガラス質感のブランド要素、遊び心のあるタイポグラフィを採用。",
+        zh: "校园招聘视觉设计。挑战是改变年轻人心中九阳『传统豆浆机品牌』的刻板印象，大面积使用橙色，搭配玻璃质感的品牌元素和趣味排版。"
+      },
+      details: [
+        { src: "assets/detail/project-5/img-1.jpg", w: 4000, h: 4915 }, // 0.81 portrait
+        { src: "assets/detail/project-5/img-2.jpg", w: 4001, h: 5102 }, // 0.78 portrait
+        { src: "assets/detail/project-5/img-3.jpg", w: 4002, h: 4788 }, // 0.84 portrait
+        { src: "assets/detail/project-5/img-4.jpg", w: 4007, h: 6140 }, // 0.65 very tall
+        { src: "assets/detail/project-5/img-5.jpg", w: 4008, h: 3644 }  // 1.10 nearly square
+      ]
+    },
+    {
+      id: 6,
+      title: { en: "Tencent Festival Gift", ja: "Tencent 端午ギフト", zh: "腾讯端午礼盒" },
+      cat:   { en: "3D Modeling · Packaging", ja: "3Dモデリング · パッケージ", zh: "3D建模 · 包装" },
+      year: "2021",
+      role:  { en: "3D Modeling", ja: "3Dモデリング", zh: "3D建模" },
+      client:{ en: "ThinkBig Studio", ja: "ThinkBig Studio", zh: "ThinkBig Studio" },
+      desc:  {
+        en: "Dragon-Boat-Festival gift packs combining creativity and practicality. A skateboard transforms into a chair illustrated with the Tencent penguin; a carpet and triangle-dumpling packaging round out the outdoor set.",
+        ja: "端午節ギフトパック。スケートボードを椅子に変形させる実用性と創造性の融合。テンセントペンギンのイラストを施し、カーペットと三角ちまきパッケージも付属。",
+        zh: "端午节礼盒，将滑板变形为椅子，兼具创意与实用性。融入腾讯企鹅插画和端午元素，另附地毯和三角粽子包装，可整套带出野营。"
+      },
+      details: [
+        { src: "assets/detail/project-6/img-1.jpg", w: 3334, h: 1876 }, // 1.78 wide
+        { src: "assets/detail/project-6/img-2.jpg", w: 1600, h: 900 },
+        { src: "assets/detail/project-6/img-3.jpg", w: 1600, h: 900 },
+        { src: "assets/detail/project-6/img-4.jpg", w: 1600, h: 900 },
+        { src: "assets/detail/project-6/img-5.jpg", w: 1600, h: 900 }
+      ]
+    },
+    {
+      id: 7,
+      title: { en: "Tencent Esports Gift", ja: "Tencent eスポーツギフト", zh: "腾讯电竞礼盒" },
+      cat:   { en: "Packaging · Photography", ja: "パッケージ · 写真", zh: "包装 · 摄影" },
+      year: "2021",
+      role:  { en: "Calendar Design, Photography", ja: "カレンダー設計、撮影", zh: "日历设计、摄影" },
+      client:{ en: "ThinkBig Studio", ja: "ThinkBig Studio", zh: "ThinkBig Studio" },
+      desc:  {
+        en: "Esports New-Year gift pack styled as a chip bag. Centerpiece is a 365-day creative calendar featuring esports highlights, jokes, and industry jargon, plus stickers.",
+        ja: "ポテチ袋型のeスポーツ年賀ギフトパック。365日分のeスポーツハイライト、ジョーク、業界用語を収録したクリエイティブカレンダーが目玉。",
+        zh: "薯片袋造型的电竞新年礼盒。亮点是365天创意日历，收录电竞名场面、趣味梗和行业术语，让收到礼盒的员工每天都能产生共鸣。"
+      },
+      details: [
+        { src: "assets/detail/project-7/img-1.jpg", w: 3912, h: 2580 }, // 1.52
+        { src: "assets/detail/project-7/img-2.jpg", w: 3720, h: 2533 },
+        { src: "assets/detail/project-7/img-3.jpg", w: 3870, h: 2800 },
+        { src: "assets/detail/project-7/img-4.jpg", w: 2808, h: 2808 }, // square
+        { src: "assets/detail/project-7/img-5.jpg", w: 2864, h: 2968 }  // square-ish
+      ]
+    }
+  ];
+
+  const I18N = {
+    en: { back: "All work", design: "Design", prev: "Previous", next: "Next", meta_year: "Year", meta_role: "Role", meta_client: "Client", meta_category: "Category" },
+    ja: { back: "作品一覧", design: "Design", prev: "前へ", next: "次へ", meta_year: "年", meta_role: "役割", meta_client: "クライアント", meta_category: "カテゴリ" },
+    zh: { back: "返回作品", design: "Design", prev: "上一个", next: "下一个", meta_year: "年份", meta_role: "角色", meta_client: "客户", meta_category: "类别" }
+  };
+
+  /* ───────── Read URL params ───────── */
+  const params = new URLSearchParams(location.search);
+  const projectId = parseInt(params.get("id") || "1", 10);
+  let currentLang = params.get("lang") || localStorage.getItem("lang") || "en";
+  if (!I18N[currentLang]) currentLang = "en";
+
+  const project = PROJECTS.find(p => p.id === projectId) || PROJECTS[0];
+  const projIndex = PROJECTS.indexOf(project);
+  const prevProject = projIndex > 0 ? PROJECTS[projIndex - 1] : null;
+  const nextProject = projIndex < PROJECTS.length - 1 ? PROJECTS[projIndex + 1] : null;
+
+  /* ───────── Content-aware layout decisions ───────── */
+  /*
+   * Classify each image by aspect ratio (w/h):
+   *   > 1.55 → wide landscape  → full width
+   *   > 1.20 → landscape       → wide (92%)
+   *   > 0.95 → near square     → medium (78%)
+   *   > 0.70 → portrait        → narrow (62%) — try to pair adjacent ones
+   *   ≤ 0.70 → very tall       → narrow (52%) — single column
+   *
+   * Then a pairing pass: two consecutive portraits become a side-by-side pair.
+   */
+  function buildLayout(details) {
+    const classified = details.map(d => {
+      const ratio = d.w / d.h;
+      let kind;
+      if (ratio > 1.55) kind = "wide-landscape";
+      else if (ratio > 1.20) kind = "landscape";
+      else if (ratio > 0.95) kind = "square";
+      else if (ratio > 0.70) kind = "portrait";
+      else kind = "tall";
+      return { ...d, ratio, kind };
+    });
+
+    // Pairing pass: collapse consecutive portrait/tall images into pairs
+    const blocks = [];
+    let i = 0;
+    while (i < classified.length) {
+      const cur = classified[i];
+      const nxt = classified[i + 1];
+      // pair two portraits OR a portrait + tall (similar verticality)
+      const isVerticalish = (x) => x && (x.kind === "portrait" || x.kind === "tall");
+      if (isVerticalish(cur) && isVerticalish(nxt)) {
+        blocks.push({ type: "pair", items: [cur, nxt] });
+        i += 2;
+      } else {
+        blocks.push({ type: "single", item: cur });
+        i += 1;
+      }
+    }
+    return blocks;
+  }
+
+  /* ───────── Render ───────── */
+  function widthClass(kind) {
+    return ({
+      "wide-landscape": "img-full",
+      "landscape":      "img-wide",
+      "square":         "img-medium",
+      "portrait":       "img-narrow",
+      "tall":           "img-narrow"
+    })[kind] || "img-medium";
+  }
+
+  function renderStack() {
+    const stack = document.getElementById("stack");
+    stack.innerHTML = "";
+    const blocks = buildLayout(project.details);
+    let n = 1;
+    blocks.forEach((b, idx) => {
+      const block = document.createElement("div");
+      block.dataset.reveal = "";
+
+      if (b.type === "pair") {
+        block.className = "img-pair img-medium";
+        const pad = (i) => String(i).padStart(2, "0");
+        block.innerHTML = `
+          <div class="img-block">
+            <img src="${b.items[0].src}" alt="" loading="lazy" />
+            <div class="img-caption"><span class="num">${pad(n)}</span><span class="line"></span></div>
+          </div>
+          <div class="img-block">
+            <img src="${b.items[1].src}" alt="" loading="lazy" />
+            <div class="img-caption"><span class="num">${pad(n + 1)}</span><span class="line"></span></div>
+          </div>
+        `;
+        n += 2;
+      } else {
+        const item = b.item;
+        block.className = `img-block ${widthClass(item.kind)}`;
+        const num = String(n).padStart(2, "0");
+        block.innerHTML = `
+          <img src="${item.src}" alt="" loading="lazy" />
+          <div class="img-caption"><span class="num">${num}</span><span class="line"></span></div>
+        `;
+        n += 1;
+      }
+
+      stack.appendChild(block);
+    });
+
+    // Reveal observer
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(e => { if (e.isIntersecting) e.target.classList.add("in"); });
+    }, { threshold: 0.08 });
+    document.querySelectorAll("[data-reveal]").forEach(el => io.observe(el));
+  }
+
+  function renderMeta() {
+    const l = currentLang;
+    document.getElementById("hero-eyebrow").textContent = `${project.cat[l]} · ${project.year}`;
+    document.getElementById("hero-title").textContent = project.title[l];
+    document.getElementById("hero-desc").textContent = project.desc[l];
+    document.getElementById("meta-year").textContent = project.year;
+    document.getElementById("meta-role").textContent = project.role[l];
+    document.getElementById("meta-client").textContent = project.client[l];
+    document.getElementById("meta-cat").textContent = project.cat[l];
+    document.getElementById("crumb-num").textContent = String(project.id).padStart(2, "0");
+    document.title = `${project.title[l]} — Cheng Jiang`;
+
+    // i18n labels
+    document.querySelectorAll("[data-i18n]").forEach(el => {
+      const k = el.dataset.i18n;
+      if (I18N[l][k]) el.textContent = I18N[l][k];
+    });
+
+    // prev/next
+    const prevLink = document.getElementById("prev-link");
+    const nextLink = document.getElementById("next-link");
+    if (prevProject) {
+      prevLink.href = `project.html?id=${prevProject.id}&lang=${l}`;
+      document.getElementById("prev-name").textContent = prevProject.title[l];
+      prevLink.classList.remove("disabled");
+    } else {
+      prevLink.classList.add("disabled");
+      document.getElementById("prev-name").textContent = "—";
+    }
+    if (nextProject) {
+      nextLink.href = `project.html?id=${nextProject.id}&lang=${l}`;
+      document.getElementById("next-name").textContent = nextProject.title[l];
+      nextLink.classList.remove("disabled");
+    } else {
+      nextLink.classList.add("disabled");
+      document.getElementById("next-name").textContent = "—";
+    }
+
+    // back link preserves lang
+    document.getElementById("back-link").href = `Portfolio.html?lang=${l}#design`;
+
+    // lang toggle highlight
+    document.querySelectorAll(".lang-toggle button").forEach(b => {
+      b.classList.toggle("active", b.dataset.lang === l);
+    });
+
+    // html lang attribute
+    document.documentElement.setAttribute("lang", l);
+  }
+
+  /* ───────── Lang toggle ───────── */
+  document.querySelectorAll(".lang-toggle button").forEach(b => {
+    b.addEventListener("click", () => {
+      currentLang = b.dataset.lang;
+      localStorage.setItem("lang", currentLang);
+      renderMeta();
+    });
+  });
+
+  /* ───────── Init ───────── */
+  renderMeta();
+  renderStack();
+</script>
+
+</body>
+</html>
