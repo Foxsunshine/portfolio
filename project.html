@@ -282,7 +282,7 @@
 
 <header class="topbar">
   <div class="topbar-inner">
-    <a class="back-link" href="Portfolio.html#design" id="back-link">
+    <a class="back-link" href="index.html#design" id="back-link">
       <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 18l-6-6 6-6"/></svg>
       <span data-i18n="back">All work</span>
     </a>
@@ -337,7 +337,7 @@
 </nav>
 
 <script>
-  /* ───────── Project data (mirrors Portfolio.html PROJECTS) ───────── */
+  /* ───────── Project data (mirrors index.html PROJECTS) ───────── */
   const PROJECTS = [
     {
       id: 1,
@@ -634,7 +634,7 @@
     }
 
     // back link preserves lang
-    document.getElementById("back-link").href = `Portfolio.html?lang=${l}#design`;
+    document.getElementById("back-link").href = `index.html?lang=${l}#design`;
 
     // lang toggle highlight
     document.querySelectorAll(".lang-toggle button").forEach(b => {
