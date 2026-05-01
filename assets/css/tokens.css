@@ -1,0 +1,88 @@
+/* Design tokens — colors, fonts, radii, shadows. Light is default; dark
+   theme overrides via [data-theme="dark"]. The --glow-* triplet feeds the
+   spotlight/trail/lit-card effects so they retune themselves per theme. */
+
+:root {
+  /* Light theme (default) */
+  --bg:        #ffffff;
+  --bg-alt:    #f5f5f5;
+  --bg-tag:    #f3f4f6;
+  --bg-hover:  #f9fafb;
+  --bg-deep:   #0f172a;        /* dark surfaces (dark project thumb) */
+  --ink:       #111111;
+  --ink-body:  #333333;
+  --ink-muted: #888888;
+  --ink-tag:   #4b5563;
+  --ink-on-deep: #f5f5f5;
+  --ink-on-deep-muted: #94a3b8;
+  --accent:    #475569;
+  --accent-soft: #64748b;
+  --border:    #e5e7eb;
+  --border-soft: #f0f0f0;
+  --border-stronger: #d6dbe2;
+  --tooltip-bg: #111;
+  --tooltip-fg: #fff;
+  --selection-bg: #cbd5e1;
+  --selection-fg: #0f172a;
+  --sep-pipe:  #d1d5db;
+  --shadow-card: 0 2px 8px rgba(0,0,0,0.06);
+  --shadow-lift: 0 12px 32px -8px rgba(15,23,42,0.18), 0 4px 12px rgba(15,23,42,0.06);
+  --shadow-proj-hover: 0 4px 12px rgba(0,0,0,0.08);
+  --thumb-from: #f8fafc;
+  --thumb-to:   #e2e8f0;
+  --feature-from: #475569;
+  --feature-to:   #334155;
+  --gallery-img-filter: none;
+  --copy-success: #16a34a;
+  /* Glow color used by spotlight, trail, card lit-state — warm orange in light */
+  --glow-r: 255;
+  --glow-g: 170;
+  --glow-b: 80;
+  --radius-card: 8px;
+  --radius-tag:  4px;
+  --radius-img:  12px;
+  --font-sans:   'Inter', 'Noto Sans JP', 'Noto Sans SC', system-ui, -apple-system, sans-serif;
+  --font-cjk:    'Noto Sans JP', 'Noto Sans SC', 'Inter', system-ui, sans-serif;
+  --font-mono:   'JetBrains Mono', 'SF Mono', Menlo, Consolas, monospace;
+}
+
+/* Dark theme — cool blue-gray, gentle contrast, glow shifts to soft cyan-blue */
+:root[data-theme="dark"] {
+  --bg:        #0f1419;
+  --bg-alt:    #161c23;
+  --bg-tag:    #1a222b;
+  --bg-hover:  #182029;
+  --bg-deep:   #060a0e;
+  --ink:       #e8eef5;
+  --ink-body:  #b8c2cf;
+  --ink-muted: #6b7785;
+  --ink-tag:   #94a3b8;
+  --ink-on-deep: #e8eef5;
+  --ink-on-deep-muted: #6b7785;
+  --accent:    #a8c5e0;
+  --accent-soft: #7d9cba;
+  --border:    #232c36;
+  --border-soft: #1a222b;
+  --border-stronger: #2d3845;
+  --tooltip-bg: #e8eef5;
+  --tooltip-fg: #0f1419;
+  --selection-bg: #2d3845;
+  --selection-fg: #e8eef5;
+  --sep-pipe:  #2d3845;
+  --shadow-card: 0 2px 8px rgba(0,0,0,0.30);
+  --shadow-lift: 0 12px 32px -8px rgba(0,0,0,0.55), 0 4px 12px rgba(0,0,0,0.35);
+  --shadow-proj-hover: 0 4px 14px rgba(0,0,0,0.40);
+  --thumb-from: #1a222b;
+  --thumb-to:   #0f1419;
+  --feature-from: #2d3845;
+  --feature-to:   #1a222b;
+  --gallery-img-filter: brightness(0.85);
+  --copy-success: #4ade80;
+  /* Cool, gentle cyan-blue — present but not visually loud over reading */
+  --glow-r: 120;
+  --glow-g: 200;
+  --glow-b: 255;
+}
+
+:root[lang="ja"], :root[lang="zh"] { --font-sans: 'Noto Sans JP', 'Noto Sans SC', 'Inter', system-ui, sans-serif; }
+:root[lang="zh"] { --font-sans: 'Noto Sans SC', 'Noto Sans JP', 'Inter', system-ui, sans-serif; }

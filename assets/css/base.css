@@ -1,0 +1,37 @@
+/* Resets, typographic defaults, selection. Shared by index and project. */
+
+*, *::before, *::after { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  background: var(--bg);
+  color: var(--ink-body);
+  font-family: var(--font-sans);
+  font-size: 16px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+::selection { background: var(--selection-bg); color: var(--selection-fg); }
+
+/* Smooth theme transition — only active during user-initiated theme change */
+html.theme-transitioning,
+html.theme-transitioning *,
+html.theme-transitioning *::before,
+html.theme-transitioning *::after {
+  transition:
+    background-color 0.45s ease,
+    background 0.45s ease,
+    color 0.45s ease,
+    border-color 0.45s ease,
+    box-shadow 0.45s ease,
+    fill 0.45s ease,
+    stroke 0.45s ease !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+  [data-reveal] { opacity: 1; transform: none; }
+}

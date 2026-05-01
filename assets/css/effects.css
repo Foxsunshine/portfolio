@@ -1,0 +1,179 @@
+/* Cursor spotlight, comet trail, card lit-state, About keyword tooltips,
+   name-font easter egg, sentence-end punct toggle, email-copy scramble,
+   lang-toggle stagger animation, and reveal-on-scroll. */
+
+/* Reveal-on-scroll */
+[data-reveal] { opacity: 0; transform: translateY(20px); transition: opacity 0.5s ease-out, transform 0.5s ease-out; }
+[data-reveal].is-visible { opacity: 1; transform: translateY(0); }
+
+/* Cursor spotlight */
+.spotlight {
+  position: fixed;
+  pointer-events: none;
+  z-index: 1;
+  width: 340px;
+  height: 340px;
+  border-radius: 50%;
+  background: radial-gradient(circle,
+    rgba(var(--glow-r), var(--glow-g), var(--glow-b), 0.05) 0%,
+    rgba(var(--glow-r), var(--glow-g), var(--glow-b), 0.018) 45%,
+    rgba(var(--glow-r), var(--glow-g), var(--glow-b), 0) 70%);
+  transform: translate(-50%, -50%);
+  transition: opacity 0.5s ease;
+  opacity: 0;
+  mix-blend-mode: multiply;
+}
+.spotlight.on { opacity: 1; }
+.spotlight.absorbed { opacity: 0; }
+
+/* Subtle comet trail — small motes that lag behind the cursor */
+.spot-trail {
+  position: fixed;
+  pointer-events: none;
+  z-index: 1;
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  mix-blend-mode: multiply;
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  will-change: left, top;
+}
+.spot-trail.on { opacity: 1; }
+
+/* Card glow when spotlight is "absorbed" */
+.g-card, .proj-card {
+  transition: box-shadow 0.5s ease, transform 0.4s ease, border-color 0.3s ease;
+}
+.g-frame {
+  transition: box-shadow 0.5s ease;
+}
+.proj-card.lit {
+  box-shadow:
+    0 0 0 1px rgba(var(--glow-r), var(--glow-g), var(--glow-b), 0.14),
+    0 0 22px rgba(var(--glow-r), var(--glow-g), var(--glow-b), 0.10),
+    0 0 52px rgba(var(--glow-r), var(--glow-g), var(--glow-b), 0.06),
+    0 0 96px rgba(var(--glow-r), var(--glow-g), var(--glow-b), 0.035);
+}
+/* Gallery: shadow lives on .g-frame so it isn't clipped by the image fill */
+.g-card.lit .g-frame {
+  box-shadow:
+    0 0 0 1px rgba(var(--glow-r), var(--glow-g), var(--glow-b), 0.18),
+    0 0 22px rgba(var(--glow-r), var(--glow-g), var(--glow-b), 0.12),
+    0 0 52px rgba(var(--glow-r), var(--glow-g), var(--glow-b), 0.07),
+    0 0 96px rgba(var(--glow-r), var(--glow-g), var(--glow-b), 0.04);
+}
+
+/* About keyword tooltips */
+.kw {
+  position: relative;
+  cursor: help;
+  border-bottom: 1px dashed var(--ink-muted);
+  transition: color 0.2s ease, border-color 0.2s ease;
+}
+.kw:hover {
+  color: var(--ink);
+  border-bottom-color: var(--ink);
+}
+.kw .kw-tip {
+  position: absolute;
+  bottom: calc(100% + 10px);
+  left: 50%;
+  transform: translateX(-50%) translateY(4px);
+  background: var(--tooltip-bg);
+  color: var(--tooltip-fg);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.04em;
+  padding: 8px 12px;
+  border-radius: 4px;
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s ease, transform 0.2s ease;
+  z-index: 10;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+}
+.kw .kw-tip::after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  border: 4px solid transparent;
+  border-top-color: var(--tooltip-bg);
+}
+.kw:hover .kw-tip {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
+/* Name font switcher */
+.name {
+  cursor: pointer;
+  transition: font-family 0.3s ease, letter-spacing 0.3s ease;
+}
+.name[data-font="serif"]   { font-family: 'Georgia', 'Noto Serif JP', serif; letter-spacing: -0.01em; }
+.name[data-font="mono"]    { font-family: var(--font-mono); letter-spacing: -0.04em; font-weight: 600; }
+.name[data-font="italic"]  { font-style: italic; font-family: 'Georgia', serif; }
+
+/* Sentence-end emoji easter egg */
+.punct {
+  cursor: pointer;
+  display: inline-block;
+  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.punct:hover { transform: scale(1.4) rotate(-8deg); }
+.punct.popped {
+  animation: pop 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+@keyframes pop {
+  0%   { transform: scale(1); }
+  40%  { transform: scale(1.6) rotate(12deg); }
+  100% { transform: scale(1) rotate(0); }
+}
+
+/* Email copy feedback */
+.contact-email { position: relative; cursor: pointer; }
+.contact-email .copy-hint {
+  position: absolute;
+  right: -8px;
+  top: -28px;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ink-muted);
+  opacity: 0;
+  transform: translateY(4px);
+  transition: opacity 0.2s ease, transform 0.2s ease;
+  pointer-events: none;
+}
+.contact-email:hover .copy-hint { opacity: 1; transform: translateY(0); }
+.contact-email.copied .copy-hint { color: var(--copy-success); opacity: 1; transform: translateY(0); }
+.contact-email .email-text { transition: opacity 0.15s ease; }
+.contact-email.scrambling .email-text { font-family: var(--font-mono); letter-spacing: 0.02em; }
+
+/* Lang stagger animation */
+.stagger-fade > * {
+  display: inline-block;
+  opacity: 0;
+  transform: translateY(6px);
+  animation: staggerIn 0.4s ease-out forwards;
+}
+@keyframes staggerIn {
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Touch / no-hover: drop hover-only flourishes */
+@media (hover: none) {
+  .spotlight { display: none; }
+  .g-card:hover .g-frame { transform: none; }
+  .proj-card:hover { transform: none; }
+  .kw .kw-tip,
+  .theme-switch button[data-tip]::after,
+  .socials a[data-tip]::after { display: none; }
+}
+
+@media (max-width: 900px) {
+  .spotlight { display: none; }
+}
